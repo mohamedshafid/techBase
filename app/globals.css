@@ -1,14 +1,50 @@
 @import "tailwindcss";
 
-body{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
+body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
   font-family: var(--font-roboto), sans-serif;
-  background-color: #fff;
+  overflow-x: hidden;
 }
 
-@theme{
+@theme {
   --font-roboto: var(--font-roboto);
   --font-nunito: var(--font-nunito);
+
+  --color-primary: #f9fafc;
+  --color-accent: #2184c6;
+
+  --color-grayish: #6c757d;
+}
+
+@layer components{
+  .card{
+    @apply bg-white rounded-lg shadow-md p-5 flex flex-col items-center justify-center;
+  }
+}
+
+@layer utilities {
+  .form-div {
+    @apply mb-5;
+  }
+  .form-label {
+    @apply text-grayish text-sm font-semibold mb-3;
+  }
+
+  .flex-between {
+    @apply flex items-center justify-between;
+  }
+  .flex-center {
+    @apply flex items-center justify-center;
+  }
+  .links {
+    @apply text-sm text-accent font-semibold;
+  }
+  .heading {
+    @apply text-2xl font-bold;
+  }
+  .sub-heading {
+    @apply text-sm font-semibold text-grayish;
+  }
 }
