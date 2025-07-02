@@ -16,11 +16,41 @@ body {
   --color-accent: #2184c6;
 
   --color-grayish: #6c757d;
+
 }
 
-@layer components{
-  .card{
-    @apply bg-white rounded-lg shadow-md p-5 flex flex-col items-center justify-center;
+@layer base {
+  input,
+  textarea,
+  select {
+    @apply w-full outline-none border-none;
+  }
+  hr {
+    @apply border-grayish text-grayish bg-grayish my-5 h-[0.1px];
+  }
+}
+
+@layer components {
+  .card {
+    @apply bg-white rounded-lg shadow-md p-5 flex flex-col items-center;
+  }
+  .btn {
+    @apply px-4 py-2 rounded-md font-semibold;
+  }
+  .btn-primary {
+    @apply bg-accent text-white;
+  }
+  .btn-secondary {
+    @apply bg-white text-gray-700;
+  }
+  .btn-success {
+    @apply bg-green-500 text-white;
+  }
+  .btn-danger {
+    @apply bg-red-500 text-white;
+  }
+  .btn-excel{
+    @apply bg-[#2463ea] text-white
   }
 }
 
@@ -29,7 +59,7 @@ body {
     @apply mb-5;
   }
   .form-label {
-    @apply text-grayish text-sm font-semibold mb-3;
+    @apply text-grayish text-sm font-semibold mb-3 font-nunito;
   }
 
   .flex-between {
@@ -46,5 +76,8 @@ body {
   }
   .sub-heading {
     @apply text-sm font-semibold text-grayish;
+  }
+  .error {
+    @apply text-red-500 text-sm mt-1;
   }
 }

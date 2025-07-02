@@ -29,7 +29,7 @@ export const sidebar = [
   },
   {
     title: "Reports",
-    href: "/oreports",
+    href: "/financial-reports",
     icon: ChartColumnDecreasing,
   },
 ];

@@ -1,40 +1,45 @@
 import clsx from "clsx";
-import { MoveUp } from "lucide-react";
 import React from "react";
 
 interface StatCardProps {
   label: string;
-  value: number;
+  value: string;
   change?: {
-    type: "profit" | "loss";
-    amount: number;
+    type?: "profit" | "loss";
+    amount: number | string;
   };
-  icon: React.ElementType;
+  iconAndColor?: {
+    icon: React.ElementType;
+    color: string;
+  };
+  valueColor?: string;
 }
 
-const Cards = ({
-  label,
-  value,
-  change,
-  icon: Icon,
-}: StatCardProps & {
-  icon: React.ElementType;
-}) => {
+const Cards = ({ label, value, change, iconAndColor,valueColor }: StatCardProps) => {
   const isProfit = change?.type === "profit";
+  const Icon = iconAndColor?.icon;
+  const iconColor = iconAndColor?.color;
 
   return (
     <div className="card">
-      <div>
-        <p>{label}</p>
+      <div className="flex items-center gap-2">
+        <p className="text-sm font-semibold text-grayish">{label}</p>
+        {Icon && <Icon size={25} style={{ color: iconColor }} />}
       </div>
-      <div>
+      <div className="mt-5 ">
         <h1 className="flex items-center gap-2">
-          {value}
+          <span
+            className="lg:text-2xl font-bold text-xl"
+            style={{ color: valueColor }}
+          >
+            {value}
+          </span>
           <sub
             className={clsx(
-              "flex items-center gap-1",
+              "flex items-center gap-1 text-[11px]  font-semibold tracking-wide",
               isProfit ? "text-green-500" : "text-red-500"
             )}
+            style={{ color: valueColor }}
           >
             ↑{change?.amount}%
           </sub>
