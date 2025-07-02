@@ -1,15 +1,21 @@
+import {
+  collectedByEnum,
+  courseEnum,
+  expenseCategoryEnum,
+  paymentModeEnum,
+} from "@/lib/enums";
 import { z } from "zod";
 
 export const studentSchema = z.object({
   name: z.string().min(1, "Name is required"),
-  age: z.coerce.number().refine((val) => isNaN(val), "Age is Required"),
+  age: z.string().min(1, "Age is required"),
   phone: z.string().min(10, "Phone number must be at least 10 digits"),
-  course: z.string().min(1, "Please select a course"),
-  courseFee: z.coerce.number().refine((val) => isNaN(val), "Course fee is required"),
-  initialPayment: z.coerce.number().refine((val) => isNaN(val), "Initial payment is required"),
+  course: courseEnum,
+  courseFee: z.string().min(1, "Course fee is required"),
+  initialPayment: z.string().min(1, "Initial payment is required"),
   remainingBalance: z.string().min(1, "Remaining balance is required"),
   joinDate: z.string().min(1, "Join date is required"),
-  email: z.string().email("Invalid email").optional(),
+  email: z.string().optional(),
   address: z.string().optional(),
 });
 
@@ -22,20 +28,20 @@ export const financialSchema = z.object({
 export const feeSchema = z.object({
   student: z.string().min(1, "Student is required"),
   course: z.string().min(1, "Course is required"),
-  outStandingBalance: z.coerce.number().refine((val) => isNaN(val), "Outstanding balance is required"),
-  paymentAmount: z.coerce.number().refine((val) => isNaN(val), "Payment amount is required"),
-  paymentMode: z.string().min(1, "Payment mode is required"),
+  outStandingBalance: z.string().min(1, "Outstanding balance is required"),
+  paymentAmount: z.string().min(1, "Payment amount is required"),
+  paymentMode: paymentModeEnum,
   paymentDate: z.string().min(1, "Payment date is required"),
-  collectedBy: z.string().min(1, "Collected by is required"),
+  collectedBy: collectedByEnum,
   notes: z.string().optional(),
 });
 
 export const expenseSchema = z.object({
-  expenseDate: z.string().min(1, "Expense date is required"),
-  expenseAmount: z.coerce.number().refine((val) => isNaN(val), "Expense amount is required"),
-  expensePurpose: z.string().min(1, "Expense purpose is required"),
+  date: z.string().min(1, "Expense date is required"),
+  amount: z.string().min(1, "Expense amount is required"),
+  purpose: z.string().min(1, "Expense purpose is required"),
   paidTo: z.string().min(1, "Paid to is required"),
-  paymentMode: z.string().min(1, "Payment mode is required"),
-  category: z.string().min(1, "Category is required"),
+  paymentMode: paymentModeEnum,
+  category: expenseCategoryEnum,
   description: z.string().optional(),
 });

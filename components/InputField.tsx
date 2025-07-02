@@ -1,13 +1,19 @@
 import React from "react";
 import { UseFormRegisterReturn } from "react-hook-form";
 
+type option = {
+  label: string;
+  value: string;
+};
+
 type InputFieldProps = {
   type?: string;
   id: string;
   placeholder?: string;
   icon?: React.ElementType;
-  options?: string[];
-  register: UseFormRegisterReturn;
+  options?: option[];
+  register?: UseFormRegisterReturn;
+  readOnly?: boolean;
 };
 
 const InputField = ({
@@ -17,27 +23,34 @@ const InputField = ({
   icon: Icon,
   options,
   register,
+  readOnly = false,
 }: InputFieldProps) => {
   const renderInput = () => {
-
     switch (type) {
       case "text":
       case "phone":
       case "email":
       case "password":
       case "number":
-        return <input type={type} placeholder={placeholder} {...register} />;
+        return (
+          <input
+            type={type}
+            placeholder={placeholder}
+            {...register}
+            readOnly={readOnly}
+          />
+        );
       case "select":
         return (
-          <select id={id} {...register}>
+          <select id={id} {...register} defaultValue="">
             {options?.map((option, index) =>
-              index === 0 && option === "Select the course" ? (
+              index === 0 ? (
                 <option key={index} value="" disabled>
-                  {option}
+                  {option.label}
                 </option>
               ) : (
-                <option key={index} value={option}>
-                  {option}
+                <option key={index} value={option.value}>
+                  {option.label}
                 </option>
               )
             )}
@@ -51,8 +64,7 @@ const InputField = ({
             type="date"
             placeholder={placeholder}
             {...register}
-            value='2025-07-02' 
-            
+            value="2025-07-02"
           />
         );
       default:

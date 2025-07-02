@@ -1,28 +1,30 @@
-import { Cards, ExpenseForm, FeeForm, SearchSpecific } from "@/components";
-import { BadgeIndianRupee, BellDot, BookKey, HardDriveDownload } from "lucide-react";
+import {
+  AnimatedWrapper,
+  Cards,
+  ExpenseForm,
+  Header,
+} from "@/components";
+import {
+  BadgeIndianRupee,
+  BellDot,
+  BookKey,
+  HardDriveDownload,
+} from "lucide-react";
 import React from "react";
 
 const Expenses = () => {
   return (
     <main>
-      <div className="flex-between">
-        <div>
-          <h1 className="heading">Expense Entry</h1>
-          <p className="sub-heading">
-            Log center-related spending and expenses
-          </p>
-        </div>
-
-        {/* Search Specific Component */}
-        <SearchSpecific />
-      </div>
+      <Header
+        title="Expense Entry"
+        subtitle="Log center-related spending and expenses"
+      />
 
       <div className="flex gap-5 mt-10">
         <div className="w-full max-w-[1120px] p-4 bg-white shadow-md rounded-lg">
-          <div className="mb-6">
-            <h1 className="heading font-nunito">Add New Expense</h1>
-          </div>
-          <ExpenseForm />
+          <AnimatedWrapper>
+            <ExpenseForm />
+          </AnimatedWrapper>
         </div>
         <div className="hidden lg:flex  flex-1 flex-col gap-5">
           <Cards

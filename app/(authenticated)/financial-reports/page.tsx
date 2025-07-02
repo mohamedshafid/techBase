@@ -1,9 +1,7 @@
 import {
   Cards,
-  DetailsCard,
   FinancialForm,
-  InputField,
-  SearchSpecific,
+  Header,
 } from "@/components";
 import { BadgeIndianRupee, BanknoteArrowDown, ChartPie } from "lucide-react";
 import React from "react";
@@ -11,17 +9,10 @@ import React from "react";
 const Reports = () => {
   return (
     <main>
-      <div className="flex-between">
-        <div>
-          <h1 className="heading">Financial Reports</h1>
-          <p className="sub-heading">
-            Analyze your center's financial health and performance
-          </p>
-        </div>
-
-        {/* Search Specific Component */}
-        <SearchSpecific />
-      </div>
+      <Header
+        title="Financial Reports"
+        subtitle="Analyze your center's financial health and performance"
+      />
 
       <div className="w-full mt-8 bg-white rounded-lg p-6 flex items-center">
         <FinancialForm />

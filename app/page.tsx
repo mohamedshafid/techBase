@@ -40,7 +40,6 @@ const Home = () => {
             <InputField
               type="email"
               placeholder="Enter your email or username"
-              name="email"
               id="email"
             />
           </div>
@@ -52,7 +51,6 @@ const Home = () => {
             <InputField
               type="password"
               placeholder="Enter your password"
-              name="password"
               id="password"
             />
           </div>

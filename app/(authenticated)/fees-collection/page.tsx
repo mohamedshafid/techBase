@@ -1,4 +1,9 @@
-import { Cards, FeeForm, SearchSpecific } from "@/components";
+import {
+  AnimatedWrapper,
+  Cards,
+  FeeForm,
+  Header,
+} from "@/components";
 import {
   BadgeIndianRupee,
   BellDot,
@@ -10,21 +15,12 @@ import React from "react";
 const FeesCollection = () => {
   return (
     <main>
-      <div className="flex-between">
-        <div>
-          <h1 className="heading">Fee Collection</h1>
-          <p className="sub-heading">Record student fee payments</p>
-        </div>
-
-        {/* Search Specific Component */}
-        <SearchSpecific />
-      </div>
+      <Header title="Fee Collection" subtitle="Record student fee payments" />
       <div className="flex gap-5 mt-10 ">
         <div className="w-full max-w-[1120px] p-4 bg-white shadow-md rounded-lg">
-          <div className="mb-6">
-            <h1 className="heading font-nunito">Record Fee Payment</h1>
-          </div>
-          <FeeForm />
+          <AnimatedWrapper>
+            <FeeForm />
+          </AnimatedWrapper>
         </div>
         <div className="hidden lg:flex  flex-1 flex-col gap-5">
           <Cards

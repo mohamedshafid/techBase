@@ -1,12 +1,15 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 import InputField from "../InputField";
 import { RefreshCcwDot, UserPlus } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { studentSchema } from "@/schemas/schema";
 import { z } from "zod";
+import { courseOptions } from "@/constants";
+import { createStudent } from "@/actions/student.action";
+// import { createStudent } from "@/actions/student.action";
 
 type studentFormData = z.infer<typeof studentSchema>;
 
@@ -16,16 +19,38 @@ const StudentForm = () => {
     register,
     reset,
     formState: { errors },
+    watch,
+    setValue,
   } = useForm<studentFormData>({
     resolver: zodResolver(studentSchema),
   });
 
-  const onSubmit = (data: studentFormData) => {
-    console.log("inside the onsubmit");
+  const onSubmit = async (data: studentFormData) => {
+    try {
+      const student = await createStudent(data);
+      alert("Student registered successfully!");
+    } catch (error) {
+      console.error("Error registering student:", error);
+      alert("Failed to register student.");
+    }
+
+    reset();
   };
 
+  const courseFee = watch("courseFee") || 0;
+  const initialPayment = watch("initialPayment") || 0;
+
+  useEffect(() => {
+    const remainingBalance = Number(courseFee) - Number(initialPayment);
+
+    setValue(
+      "remainingBalance",
+      (remainingBalance >= 0 ? remainingBalance : 0).toString()
+    );
+  }, [courseFee, initialPayment]);
+
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <form onSubmit={handleSubmit(onSubmit)} id="student-form">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 form-div">
         <div>
           <label htmlFor="" className="form-label">
@@ -75,16 +100,7 @@ const StudentForm = () => {
             type="select"
             placeholder="Select Course"
             id="course"
-            options={[
-              "Select the course",
-              "Full Stack Development",
-              "Python Programming",
-              "Data Science",
-              "UI/UX Design",
-              "Digital Marketing",
-              "Web Develoopment",
-              "Mobile App Development",
-            ]}
+            options={courseOptions}
             register={register("course")}
           />
           {errors.course && <p className="error">{errors.course?.message}</p>}
@@ -114,7 +130,11 @@ const StudentForm = () => {
             type="number"
             placeholder="Enter Initial payment amount"
             id="initialPayment"
-            register={register("initialPayment")}
+            register={register("initialPayment", {
+              validate: (value) =>
+                Number(value) <= Number(watch("courseFee")) ||
+                "Initial payment cannot be more than total course fee",
+            })}
           />
           {errors.initialPayment && (
             <p className="error">{errors.initialPayment?.message}</p>
@@ -132,6 +152,7 @@ const StudentForm = () => {
             placeholder="Auto-Calculated"
             id="remainingBalance"
             register={register("remainingBalance")}
+            readOnly
           />
           {errors.remainingBalance && (
             <p className="error">{errors.remainingBalance?.message}</p>
@@ -162,7 +183,7 @@ const StudentForm = () => {
           </label>
           <InputField
             type="email"
-            placeholder="Enter total fees amount"
+            placeholder="Enter Email Address"
             id="email"
             register={register("email")}
           />
@@ -184,7 +205,10 @@ const StudentForm = () => {
 
       {/* Buttons */}
       <div className="mt-10 flex justify-end gap-4">
-        <button className="btn btn-secondary flex gap-2 items-center border">
+        <button
+          className="btn btn-secondary flex gap-2 items-center border"
+          onClick={() => reset()}
+        >
           <RefreshCcwDot />
           Reset Form
         </button>

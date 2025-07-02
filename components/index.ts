@@ -7,6 +7,8 @@ import FinancialForm from "./forms/FinancialForm";
 import DetailsCard from "./DetailsCard";
 import FeeForm from "./forms/FeeForm";
 import ExpenseForm from "./forms/ExpenseForm";
+import AnimatedWrapper from "./AnimatedWrapper";
+import Header from "./Header";
 
 export {
   InputField,
@@ -18,4 +20,6 @@ export {
   DetailsCard,
   FeeForm,
   ExpenseForm,
+  AnimatedWrapper,
+  Header
 };

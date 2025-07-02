@@ -1,0 +1,87 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum courseCategory {
+  FULL_STACK_DEVELOPMENT
+  PYTHON_PROGRAMMING
+  DATA_SCIENCE
+  UI_UX_DESIGN
+  DIGITAL_MARKETING
+  WEB_DEVELOPMENT
+  MOBILE_APP_DEVELOPMENT
+}
+
+enum paymentCategory {
+  CASH
+  UPI
+  CARD
+  BANK_TRANSFER
+  CHEQUE
+}
+
+enum expenseCategory {
+  INFRASTRUCTURE
+  UTILITIES
+  OFFICE_SUPPLIES
+  EQUIPMENT
+  MARKETING
+  MAINTANANCE
+  OTHER
+}
+
+enum collectedByCategory {
+  MANAGER
+  HR
+}
+
+model Student{
+  id String @id @default(cuid()) 
+  name String
+  age Int
+  phone String
+  email String? @unique
+  address String?
+  joinDate DateTime @default(now())
+  course courseCategory
+  courseFee Int
+  initialPayment Int
+  remainingBalance Int 
+
+  fee Fee[]
+}
+
+
+model Fee{
+  id String @id @default(cuid())
+  studentId String
+  student Student @relation(fields: [studentId], references: [id])
+  paymentAmount Int
+  paymentMode paymentCategory
+  paymentDate DateTime @default(now())
+  collectedBy collectedByCategory
+  notes String?
+}
+
+model Expense{
+  id String @id @default(cuid())
+  date DateTime @default(now())
+  amount Int
+  purpose String
+  paidTo String
+  paymentMode paymentCategory
+  category expenseCategory
+  description String?
+}
+
