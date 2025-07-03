@@ -59,14 +59,7 @@ const InputField = ({
       case "textarea":
         return <textarea id={id} placeholder={placeholder} {...register} />;
       case "date":
-        return (
-          <input
-            type="date"
-            placeholder={placeholder}
-            {...register}
-            value="2025-07-02"
-          />
-        );
+        return <input type="date" placeholder={placeholder} {...register} />;
       default:
         return null;
     }

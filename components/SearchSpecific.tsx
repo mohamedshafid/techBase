@@ -8,7 +8,6 @@ const SearchSpecific = () => {
       <BellDot />
       <InputField
         id="search"
-        name="search"
         type="text"
         placeholder="Search ..."
         icon={Search}

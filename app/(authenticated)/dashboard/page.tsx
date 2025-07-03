@@ -1,5 +1,4 @@
-import { Cards, Header } from "@/components";
-import { prisma } from "@/lib/prisma";
+import { DashboardCard, Header } from "@/components";
 import {
   BadgeIndianRupee,
   BanknoteArrowDown,
@@ -8,55 +7,63 @@ import {
   Users,
 } from "lucide-react";
 import React from "react";
-import {
-  getPendingDues,
-  getTotalExpenses,
-  getTotalFeesCollected,
-  getTotalStudents,
-} from "@/utils";
+import { getDashboardData } from "@/services/dashboard";
 
 const Dashboard = async () => {
-  const totalStudents = await getTotalStudents();
-  const totalFeesCollected = await getTotalFeesCollected();
-  const pendingDues = await getPendingDues();
-  const totalExpenses = await getTotalExpenses();
+  const {
+    totalStudents,
+    totalFeesCollected,
+    pendingDues,
+    totalExpenses,
+    netProfit,
+  } = await getDashboardData();
 
-  const netProfit = totalFeesCollected - totalExpenses;
+
 
   return (
     <main>
       <Header title="Dashboard" subtitle="Welcome Back, John!" />
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4 mt-10">
-        <Cards
+        <DashboardCard
           label="Total Students"
-          value={`${totalStudents}`}
-          change={{ type: "profit", amount: 200 }}
-          iconAndColor={{ icon: Users, color: "blue" }}
+          value={totalStudents}
+          icon={Users}
+          iconColor="blue"
+          status="PROFIT"
+          valuePercentage={200}
         />
-        <Cards
+        <DashboardCard
           label="Fees Collected"
-          value={`₹${totalFeesCollected}`}
-          change={{ type: "profit", amount: 5 }}
-          iconAndColor={{ icon: BadgeIndianRupee, color: "green" }}
+          value={totalFeesCollected}
+          icon={BadgeIndianRupee}
+          iconColor="green"
+          status="PROFIT"
+          valuePercentage={200}
         />
-        <Cards
+        <DashboardCard
           label="Pending Dues"
-          value={`₹${pendingDues}`}
-          change={{ type: "profit", amount: 10000 }}
-          iconAndColor={{ icon: Clock4, color: "yellow" }}
+          value={pendingDues}
+          icon={Clock4}
+          iconColor="yellow"
+          status="LOSS"
+          valuePercentage={200}
         />
-        <Cards
+        <DashboardCard
           label="Total Expenses"
-          value={`₹${totalExpenses}`}
-          change={{ type: "loss", amount: 5000 }}
-          iconAndColor={{ icon: BanknoteArrowDown, color: "red" }}
+          value={totalExpenses}
+          icon={BanknoteArrowDown}
+          iconColor="red"
+          status="LOSS"
+          valuePercentage={200}
         />
 
-        <Cards
+        <DashboardCard
           label="Net Profit"
-          value={`₹${netProfit}`}
-          change={{ type: "profit", amount: 5000 }}
-          iconAndColor={{ icon: ChartPie, color: "violet" }}
+          value={netProfit}
+          icon={ChartPie}
+          iconColor="violet"
+          status="PROFIT"
+          valuePercentage={200}
         />
       </div>
     </main>

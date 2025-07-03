@@ -1,30 +1,79 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 import InputField from "../InputField";
 import { feeSchema } from "@/schemas/schema";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { BanknoteArrowUpIcon } from "lucide-react";
-import { collectedByOptions, paymentModeOptions } from "@/constants";
+import {
+  collectedByOptions,
+  courseOptions,
+  paymentModeOptions,
+} from "@/constants";
+import { createFee } from "@/actions/fee.action";
+import { updateStudent } from "@/actions/student.action";
 
 type feeFormData = z.infer<typeof feeSchema>;
 
-const FeeForm = () => {
+type StudentOption = {
+  label: string;
+  value: string;
+  course: string;
+  outStandingBalance?: string;
+};
+
+const FeeForm = ({
+  studentOption = [],
+}: {
+  studentOption?: StudentOption[];
+}) => {
   const {
     handleSubmit,
     register,
     reset,
+    setValue,
+    watch,
     formState: { errors },
   } = useForm<feeFormData>({
     resolver: zodResolver(feeSchema),
   });
 
-  const onSubmit = (data: feeFormData) => {
-    console.log("Form Data:", data);
-    reset();
+  const onSubmit = async (data: feeFormData) => {
+    try {
+      const fee = await createFee(data);
+      const student = await updateStudent(data);
+      if (fee && student) {
+        alert("Fee payment recorded successfully!");
+        reset();
+      }
+    } catch (error) {
+      console.error("Error recording fee payment:", error);
+      alert("Failed to record fee payment.");
+    }
   };
+
+  const selectedStudentId = watch("student");
+
+  useEffect(() => {
+    if (!selectedStudentId) return;
+
+    const selectedStudent = studentOption.find(
+      (s) => s.value === selectedStudentId
+    );
+
+    if (selectedStudent?.course) {
+      const course = selectedStudent?.course;
+      const match = courseOptions.find((option) => option.value === course);
+
+      setValue("course", match?.label ?? "");
+      setValue(
+        "outStandingBalance",
+        selectedStudent?.outStandingBalance || "0"
+      );
+    }
+  }, [selectedStudentId, setValue]);
 
   return (
     <>
@@ -42,6 +91,13 @@ const FeeForm = () => {
               placeholder="Enter Student's full name"
               id="name"
               register={register("student")}
+              options={[
+                { label: "Select Student", value: "" },
+                ...studentOption.map((student) => ({
+                  label: student.label,
+                  value: student.value,
+                })),
+              ]}
             />
             {errors.student && (
               <p className="error">{errors.student?.message}</p>

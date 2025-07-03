@@ -15,7 +15,13 @@ interface StatCardProps {
   valueColor?: string;
 }
 
-const Cards = ({ label, value, change, iconAndColor,valueColor }: StatCardProps) => {
+const Cards = ({
+  label,
+  value,
+  change,
+  iconAndColor,
+  valueColor,
+}: StatCardProps) => {
   const isProfit = change?.type === "profit";
   const Icon = iconAndColor?.icon;
   const iconColor = iconAndColor?.color;

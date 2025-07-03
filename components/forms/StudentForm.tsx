@@ -9,11 +9,15 @@ import { studentSchema } from "@/schemas/schema";
 import { z } from "zod";
 import { courseOptions } from "@/constants";
 import { createStudent } from "@/actions/student.action";
+import { useRouter } from "next/navigation";
 // import { createStudent } from "@/actions/student.action";
 
 type studentFormData = z.infer<typeof studentSchema>;
 
 const StudentForm = () => {
+
+  const router=useRouter();
+
   const {
     handleSubmit,
     register,
@@ -29,12 +33,12 @@ const StudentForm = () => {
     try {
       const student = await createStudent(data);
       alert("Student registered successfully!");
+      reset();
+      router.push("/dashboard");
     } catch (error) {
       console.error("Error registering student:", error);
       alert("Failed to register student.");
     }
-
-    reset();
   };
 
   const courseFee = watch("courseFee") || 0;

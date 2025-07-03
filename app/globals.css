@@ -1,5 +1,6 @@
 @import "tailwindcss";
 
+
 body {
   margin: 0;
   padding: 0;
@@ -31,8 +32,11 @@ body {
 }
 
 @layer components {
-  .card {
+  .dashboardCard {
     @apply bg-white rounded-lg shadow-md p-5 flex flex-col items-center;
+  }
+  .card{
+    @apply bg-white rounded-lg shadow-md p-5 flex flex-col items-start;
   }
   .btn {
     @apply px-4 py-2 rounded-md font-semibold;
@@ -81,3 +85,4 @@ body {
     @apply text-red-500 text-sm mt-1;
   }
 }
+

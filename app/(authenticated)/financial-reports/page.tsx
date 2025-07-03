@@ -1,8 +1,4 @@
-import {
-  Cards,
-  FinancialForm,
-  Header,
-} from "@/components";
+import { FinancialForm, Header, Cards } from "@/components";
 import { BadgeIndianRupee, BanknoteArrowDown, ChartPie } from "lucide-react";
 import React from "react";
 

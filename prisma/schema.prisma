@@ -51,7 +51,7 @@ model Student{
   name String
   age Int
   phone String
-  email String? @unique
+  email String? 
   address String?
   joinDate DateTime @default(now())
   course courseCategory

@@ -4,8 +4,40 @@ import React, { useEffect } from "react";
 import { InputField } from "@/components";
 import { GraduationCap } from "lucide-react";
 import gsap from "gsap";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { authSchema } from "@/schemas/schema";
+import { z } from "zod";
+import { useForm } from "react-hook-form";
+import { loginAction } from "@/actions/auth.action";
+import { useRouter } from "next/navigation";
+
+type authFormData = z.infer<typeof authSchema>;
 
 const Home = () => {
+  const router = useRouter();
+  const {
+    handleSubmit,
+    register,
+    formState: { errors },
+    reset,
+  } = useForm<authFormData>({
+    resolver: zodResolver(authSchema),
+  });
+
+  const onSubmit = async (data: authFormData) => {
+    try {
+      const response = await loginAction(data);
+      if (response?.success) {
+        alert("Login successful!");
+        reset();
+        router.push("/dashboard");
+      }
+    } catch (error) {
+      console.error("Error during authentication:", error);
+      alert("Failed to authenticate. Please try again.");
+    }
+  };
+
   useEffect(() => {
     gsap.fromTo(
       "#form-ref",
@@ -28,7 +60,7 @@ const Home = () => {
           </p>
         </div>
         <form
-          action=""
+          onSubmit={handleSubmit(onSubmit)}
           className="bg-white p-8 rounded-lg w-[450px]"
           id="form-ref"
         >
@@ -41,7 +73,9 @@ const Home = () => {
               type="email"
               placeholder="Enter your email or username"
               id="email"
+              register={register("email")}
             />
+            {errors.email && <p className="error">{errors.email?.message}</p>}
           </div>
           <div className="form-div">
             <label htmlFor="password" className="form-label">
@@ -52,7 +86,11 @@ const Home = () => {
               type="password"
               placeholder="Enter your password"
               id="password"
+              register={register("password")}
             />
+            {errors.password && (
+              <p className="error">{errors.password?.message}</p>
+            )}
           </div>
           <div className="flex-between  form-div">
             <div className="flex items-center gap-1">

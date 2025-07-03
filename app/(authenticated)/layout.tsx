@@ -6,8 +6,8 @@ const DashBoardLayout = ({
 }: Readonly<{ children: React.ReactNode }>) => {
   return (
     <main className="flex h-screen w-full bg-primary">
-      <Sidebar /> 
-      <div className="flex-1 px-4 sm:px-8 md:px-12 py-10">{children}</div>
+      <Sidebar />
+      <div className="lg:ml-80 flex-1 px-4 sm:px-8 md:px-12 py-10">{children}</div>
     </main>
   );
 };

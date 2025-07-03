@@ -8,6 +8,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { BanknoteArrowUpIcon } from "lucide-react";
 import { expenseCategoryOptions, paymentModeOptions } from "@/constants";
+import { createExpense } from "@/actions/expense.action";
 
 type expenseFormData = z.infer<typeof expenseSchema>;
 
@@ -21,9 +22,19 @@ const ExpenseForm = () => {
     resolver: zodResolver(expenseSchema),
   });
 
-  const onSubmit = (data: expenseFormData) => {
-    console.log(data);
-    reset();
+  const onSubmit = async (data: expenseFormData) => {
+    try {
+      const expense = await createExpense(data);
+      if (expense) {
+        alert("Expense recorded successfully!");
+        reset();
+      }
+
+      console.log("Expense Data:", expense);
+    } catch (error) {
+      console.log(error);
+      alert("Failed to record expense.");
+    }
   };
 
   return (
@@ -121,7 +132,7 @@ const ExpenseForm = () => {
         </div>
         <div className="form-div">
           <label htmlFor="" className="form-label">
-            Descriptiion (Optional)
+            Description (Optional)
           </label>
           <InputField
             type="textarea"

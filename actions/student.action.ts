@@ -1,5 +1,6 @@
 "use server";
 import { prisma } from "@/lib/prisma";
+import { revalidatePath } from "next/cache";
 
 export const createStudent = async (data: any) => {
   try {
@@ -17,9 +18,27 @@ export const createStudent = async (data: any) => {
         remainingBalance: parseInt(data.remainingBalance, 10),
       },
     });
-    return student;
+
+    revalidatePath("/dashboard");
+    
   } catch (error) {
     console.error("Error creating student:", error);
-    throw error;
+  }
+};
+
+
+export const updateStudent = async (data:any) => {
+  try {
+    const student = await prisma.student.update({
+      where: { id: data.student },
+      data: {
+        remainingBalance: parseInt(data.paymentAmount,10),
+      },
+    });
+
+    revalidatePath("/dashboard");
+    
+  } catch (error) {
+    console.error("Error updating student:", error);
   }
 };

@@ -1,0 +1,69 @@
+import { prisma } from "@/lib/prisma";
+
+export const getTotalFeesCollected = async () => {
+  const [initialPaymentsSum, feePaymentsSum] = await Promise.all([
+    prisma.student.aggregate({ _sum: { initialPayment: true } }),
+    prisma.fee.aggregate({ _sum: { paymentAmount: true } }),
+  ]);
+
+  return (
+    (initialPaymentsSum._sum.initialPayment ?? 0) +
+    (feePaymentsSum._sum.paymentAmount ?? 0)
+  );
+};
+export const getTotalStudents = async () => {
+  console.log(await prisma.student.count());
+  return await prisma.student.count();
+};
+
+export const getPendingDues = async () => {
+  const pendingDues = await prisma.student.aggregate({
+    _sum: { remainingBalance: true },
+  });
+  return pendingDues._sum.remainingBalance ?? 0;
+};
+
+export const getTotalExpenses = async () => {
+  const totalExpenses = await prisma.expense.aggregate({
+    _sum: { amount: true },
+  });
+
+  return totalExpenses._sum.amount ?? 0;
+};
+
+export const getRecentFeeCollections = async (limit = 5) => {
+  const fees = await prisma.fee.findMany({
+    take: limit,
+    orderBy: {
+      paymentDate: "desc",
+    },
+    include: {
+      student: true,
+    },
+  });
+
+  return fees.map((fee) => ({
+    studentName: fee.student.name,
+    course: fee.student.course,
+    date: fee.paymentDate,
+    amount: fee.paymentAmount,
+  }));
+};
+
+
+export const getRecentExpenses = async (limit = 5) => {
+  const expenses = await prisma.expense.findMany({
+    take: limit,
+    orderBy: {
+      date: "desc",
+    },
+  });
+
+  return expenses.map((exp) => ({
+    purpose: exp.purpose,
+    paidTo: exp.paidTo,
+    date: exp.date,
+    amount: exp.amount,
+  }));
+};
+

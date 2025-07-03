@@ -1,6 +1,5 @@
 import InputField from "./InputField";
 import Sidebar from "./Sidebar";
-import Cards from "./Cards";
 import SearchSpecific from "./SearchSpecific";
 import StudentForm from "./forms/StudentForm";
 import FinancialForm from "./forms/FinancialForm";
@@ -9,11 +8,14 @@ import FeeForm from "./forms/FeeForm";
 import ExpenseForm from "./forms/ExpenseForm";
 import AnimatedWrapper from "./AnimatedWrapper";
 import Header from "./Header";
+import DashboardCard from "./Cards/DashboardCard";
+import FeeCard from "./Cards/FeeCard";
+import ExpenseCard from "./Cards/ExpenseCard";
+import Cards from "./Cards";
 
 export {
   InputField,
   Sidebar,
-  Cards,
   SearchSpecific,
   StudentForm,
   FinancialForm,
@@ -21,5 +23,9 @@ export {
   FeeForm,
   ExpenseForm,
   AnimatedWrapper,
-  Header
+  Header,
+  DashboardCard,
+  FeeCard,
+  ExpenseCard,
+  Cards
 };

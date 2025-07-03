@@ -52,7 +52,7 @@ const FinancialForm = () => {
             type="select"
             placeholder="All reports"
             id="reportType"
-            options={["All Reports", "Income Report", "Expense Report"]}
+            // options={["All Reports", "Income Report", "Expense Report"]}
             register={register("reportType")}
           />
         </div>

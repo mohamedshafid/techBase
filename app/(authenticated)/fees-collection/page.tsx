@@ -1,9 +1,7 @@
-import {
-  AnimatedWrapper,
-  Cards,
-  FeeForm,
-  Header,
-} from "@/components";
+import { AnimatedWrapper, FeeCard, FeeForm, Header } from "@/components";
+import { FeeTable } from "@/components/Tables/FeeTable";
+import { getFeeData } from "@/services/fee";
+import { getStudentOptions } from "@/services/student";
 import {
   BadgeIndianRupee,
   BellDot,
@@ -12,33 +10,36 @@ import {
 } from "lucide-react";
 import React from "react";
 
-const FeesCollection = () => {
+const FeesCollection = async () => {
+  const studentOptions = await getStudentOptions();
+  const { fee } = await getFeeData();
+
   return (
     <main>
       <Header title="Fee Collection" subtitle="Record student fee payments" />
       <div className="flex gap-5 mt-10 ">
         <div className="w-full max-w-[1120px] p-4 bg-white shadow-md rounded-lg">
           <AnimatedWrapper>
-            <FeeForm />
+            <FeeForm studentOption={studentOptions} />
           </AnimatedWrapper>
         </div>
+
         <div className="hidden lg:flex  flex-1 flex-col gap-5">
-          <Cards
+          <FeeCard
             label="Today's Collection"
-            value="₹45,500"
-            change={{
-              amount: "8 payments recorded",
-            }}
-            iconAndColor={{ icon: BadgeIndianRupee, color: "green" }}
+            value={1000}
+            icon={BadgeIndianRupee}
+            color="green"
+            info="8 payments recorded"
           />
-          <Cards
+          <FeeCard
             label="Pending Collections"
-            value="₹85,000"
-            change={{
-              amount: "23 students pending",
-            }}
-            iconAndColor={{ icon: BadgeIndianRupee, color: "green" }}
+            value={1000}
+            icon={BadgeIndianRupee}
+            color="orange"
+            info="23 students pending"
           />
+
           <div className="bg-white shadow-md rounded-lg p-5">
             <h1 className="text-xl font-bold text-gray-900">Quick Action</h1>
 
@@ -58,6 +59,23 @@ const FeesCollection = () => {
             </ul>
           </div>
         </div>
+      </div>
+      <div className="w-full mt-6 bg-white rounded-lg p-6">
+        <FeeTable
+          payments={fee.map((fee) => ({
+            id: fee.id,
+            studentName: fee.student.name,
+            course: fee.student.course,
+            date: fee.paymentDate.toLocaleDateString("en-US", {
+              month: "short",
+              day: "numeric",
+              year: "numeric",
+            }),
+            mode: fee.paymentMode,
+            amount: fee.paymentAmount,
+            collectedBy: fee.collectedBy,
+          }))}
+        />
       </div>
     </main>
   );
