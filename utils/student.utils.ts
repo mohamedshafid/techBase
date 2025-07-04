@@ -1,4 +1,5 @@
 import { prisma } from "@/lib/prisma";
+import { courseCategory } from "@prisma/client";
 
 export const createStudentOptions = (students: any) => {
   students = students.map((student: any) => {
@@ -14,6 +15,7 @@ export const createStudentOptions = (students: any) => {
     label: "Select Student",
     value: "",
     course: "",
+    outStandingBalance: 0,
   });
   return students;
 };
@@ -39,3 +41,18 @@ export const getStudentCourseById = async (studentId: string) => {
     console.error("Error fetching student course:", error);
   }
 };
+
+export async function getStudentCountByCourse() {
+  const courses = Object.values(courseCategory);
+
+  const counts = await Promise.all(
+    courses.map(async (labels: courseCategory) => {
+      const values = await prisma.student.count({
+        where: { course: labels },
+      });
+      return { labels, values };
+    })
+  );
+
+  return counts;
+}

@@ -70,3 +70,43 @@ export const getExpense = async () => {
     take: 10,
   });
 };
+
+export const getMonthlyExpenseSummary = async () => {
+  const expenses = await prisma.expense.findMany({
+    where: {
+      date: {
+        gte: new Date(`2025-01-01`),
+        lt: new Date(`2026-01-01`),
+      },
+    },
+    select: {
+      date: true,
+      amount: true,
+    },
+  });
+
+  const summary = new Array(12).fill(0);
+
+  expenses.forEach((expense) => {
+    const month = new Date(expense.date).getMonth();
+    summary[month] += expense.amount;
+  });
+
+  return {
+    labels: [
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec",
+    ],
+    values: summary,
+  };
+};

@@ -1,3 +1,5 @@
+'use server'
+
 import { prisma } from "@/lib/prisma";
 
 export const getTotalFeesCollected = async () => {
@@ -66,4 +68,42 @@ export const getRecentExpenses = async (limit = 5) => {
     amount: exp.amount,
   }));
 };
+
+export async function getMonthlyFeeSummary() {
+  const fees = await prisma.fee.findMany({
+    where: {
+      paymentDate: {
+        gte: new Date(`2025-01-01`),
+        lt: new Date(`2026-01-01`),
+      },
+    },
+    select: {
+      paymentAmount: true,
+      paymentDate: true,
+    },
+  });
+  const summary = new Array(12).fill(0); 
+  fees.forEach((fee) => {
+    const month = new Date(fee.paymentDate).getMonth(); 
+    summary[month] += fee.paymentAmount;
+  });
+  return {
+    labels: [
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec",
+    ],
+    values: summary,
+  };
+}
+
 

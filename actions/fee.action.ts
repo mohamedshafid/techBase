@@ -16,6 +16,7 @@ export const createFee = async (data: any) => {
       },
     });
     revalidatePath("/fees-collection");
+    revalidatePath("/dashboard");
     return fee;
   } catch (error) {
     console.log("Error creating fee:", error);

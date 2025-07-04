@@ -12,6 +12,8 @@ import DashboardCard from "./Cards/DashboardCard";
 import FeeCard from "./Cards/FeeCard";
 import ExpenseCard from "./Cards/ExpenseCard";
 import Cards from "./Cards";
+import LineChart from "./Charts/LineChart";
+import PieChart from "./Charts/PieChart";
 
 export {
   InputField,
@@ -27,5 +29,6 @@ export {
   DashboardCard,
   FeeCard,
   ExpenseCard,
-  Cards
+  Cards,
+  LineChart,
 };

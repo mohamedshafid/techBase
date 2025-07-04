@@ -1,22 +1,24 @@
 "use client";
 import React from "react";
 import { Table, Tag, Space, Button } from "antd";
+import { vi } from "date-fns/locale";
 
 interface FeePayment {
-  id: string;
-  studentName: string;
-  course: string;
-  date: string;
-  mode: string;
-  amount: number;
-  collectedBy: string;
+  id?: string;
+  studentName?: string;
+  course?: string;
+  date?: string;
+  mode?: string;
+  amount?: number;
+  collectedBy?: string;
 }
 
 interface FeePaymentTableProps {
   payments: FeePayment[];
+  visibleColumns?: string[];
 }
 
-export const FeeTable: React.FC<FeePaymentTableProps> = ({ payments }) => {
+export const FeeTable: React.FC<FeePaymentTableProps> = ({ payments ,visibleColumns}) => {
   const columns = [
     {
       title: "Student",
@@ -54,11 +56,15 @@ export const FeeTable: React.FC<FeePaymentTableProps> = ({ payments }) => {
     },
   ];
 
+  const filteredColumns = visibleColumns
+    ? columns.filter((col) => visibleColumns.includes(col.key))
+    : columns;
+
   return (
-    <Table
-      columns={columns}
-      dataSource={payments.map((p) => ({ ...p, key: p.id }))}
-      pagination={false}
-    />
+      <Table
+        key={"fee-table"}
+        columns={filteredColumns}
+        dataSource={payments.map((p) => ({ ...p, key: p.id }))}
+      />
   );
 };

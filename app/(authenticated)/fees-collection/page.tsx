@@ -12,7 +12,7 @@ import React from "react";
 
 const FeesCollection = async () => {
   const studentOptions = await getStudentOptions();
-  const { fee } = await getFeeData();
+  const { fee ,todayFee,pendingFee} = await getFeeData();
 
   return (
     <main>
@@ -27,14 +27,14 @@ const FeesCollection = async () => {
         <div className="hidden lg:flex  flex-1 flex-col gap-5">
           <FeeCard
             label="Today's Collection"
-            value={1000}
+            value={todayFee}
             icon={BadgeIndianRupee}
             color="green"
             info="8 payments recorded"
           />
           <FeeCard
             label="Pending Collections"
-            value={1000}
+            value={pendingFee}
             icon={BadgeIndianRupee}
             color="orange"
             info="23 students pending"

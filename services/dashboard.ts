@@ -1,5 +1,6 @@
 // lib/dashboardService.ts
 import {
+  getMonthlyFeeSummary,
   getPendingDues,
   getRecentExpenses,
   getRecentFeeCollections,
@@ -16,6 +17,7 @@ export const getDashboardData = async () => {
     totalExpenses,
     recentFeeCollection,
     recentExpenses,
+    monthlyFeeSummary,
   ] = await Promise.all([
     getTotalStudents(),
     getTotalFeesCollected(),
@@ -23,6 +25,7 @@ export const getDashboardData = async () => {
     getTotalExpenses(),
     getRecentFeeCollections(),
     getRecentExpenses(),
+    getMonthlyFeeSummary(),
   ]);
 
   const netProfit = Math.max(0, totalFeesCollected - totalExpenses);
@@ -35,5 +38,6 @@ export const getDashboardData = async () => {
     netProfit,
     recentFeeCollection,
     recentExpenses,
+    monthlyFeeSummary,
   };
 };

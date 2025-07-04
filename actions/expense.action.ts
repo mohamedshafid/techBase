@@ -17,9 +17,8 @@ export const createExpense = async (data: any) => {
     });
 
     revalidatePath("/expenses");
+    revalidatePath("/dashboard");
     return expense;
-
-    
   } catch (error) {
     console.log(error);
   }

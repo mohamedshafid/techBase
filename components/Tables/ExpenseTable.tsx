@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { Table, Tag} from "antd";
+import { Table, Tag } from "antd";
 
 interface Expense {
   id: string;
@@ -15,9 +15,13 @@ interface Expense {
 
 interface ExpenseTableProps {
   expenses: Expense[];
+  visibleColumns?: string[];
 }
 
-export const ExpenseTable: React.FC<ExpenseTableProps> = ({ expenses }) => {
+export const ExpenseTable: React.FC<ExpenseTableProps> = ({
+  expenses,
+  visibleColumns,
+}) => {
   const columns = [
     {
       title: "Date",
@@ -38,32 +42,32 @@ export const ExpenseTable: React.FC<ExpenseTableProps> = ({ expenses }) => {
       title: "Category",
       dataIndex: "category",
       key: "category",
-      render: (category: string) => (
-        <Tag
-          color={
-           "green"
-          }
-        >
-          {category}
-        </Tag>
-      ),
+      render: (category: string) => <Tag color={"green"}>{category}</Tag>,
     },
     {
       title: "Mode",
       dataIndex: "paymentMode",
       key: "paymentMode",
+      render: (mode: string) => <Tag color="blue">{mode}</Tag>,
     },
     {
       title: "Amount",
       dataIndex: "amount",
       key: "amount",
-      render: (amount: number) => `₹ ${amount.toLocaleString()}`,
+      render: (amount: number) => (
+        <span className="text-red-600">₹ {amount.toString()}</span>
+      ),
     },
   ];
 
+  const filteredColumns = visibleColumns
+    ? columns.filter((col) => visibleColumns.includes(col.key))
+    : columns;
+
   return (
     <Table
-      columns={columns}
+      key={"expense-table"}
+      columns={filteredColumns}
       dataSource={expenses.map((e) => ({ ...e, key: e.id }))}
     />
   );

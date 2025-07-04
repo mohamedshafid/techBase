@@ -1,9 +1,13 @@
-import { getFeePayments } from "@/utils/fee.utils";
+import { getFeePayments, getPendingFee, getTodayFee } from "@/utils/fee.utils";
 
 export const getFeeData = async () => {
-  const [fee] = await Promise.all([getFeePayments()]);
+  const [fee,todayFee,pendingFee] = await Promise.all([getFeePayments(),getTodayFee(),getPendingFee()]);
 
   return {
     fee,
+    todayFee,
+    pendingFee
   };
 };
+
+
