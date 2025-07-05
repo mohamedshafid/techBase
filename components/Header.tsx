@@ -1,19 +1,21 @@
+"use client";
+
 import React from "react";
 import SearchSpecific from "./SearchSpecific";
+import { ChartNoAxesGantt } from "lucide-react";
 
 interface HeaderProps {
   title: string;
   subtitle: string;
 }
 
-const Header = ({
-  title,subtitle
-}:HeaderProps) => {
+const Header = ({ title, subtitle }: HeaderProps) => {
+
   return (
     <div className="flex-between">
       <div>
-        <h1 className="heading">{title}</h1>
-        <p className="sub-heading">{subtitle}</p>
+        <h1 className="heading ">{title}</h1>
+        <p className="sub-heading ">{subtitle}</p>
       </div>
 
       {/* Search Specific Component */}

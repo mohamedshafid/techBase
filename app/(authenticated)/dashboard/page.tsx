@@ -36,8 +36,8 @@ const Dashboard = async () => {
 
   return (
     <main>
-      <Header title="Dashboard" subtitle="Welcome Back, John!" />
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4 mt-10">
+      <Header title="Dashboard" subtitle="Welcome Back, Mohamed Hafid!" />
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4 mt-12">
         <DashboardCard
           label="Total Students"
           value={totalStudents}
@@ -82,14 +82,14 @@ const Dashboard = async () => {
       </div>
       <div className="mt-10 grid grid-cols-1 xl:grid-cols-2 gap-3">
         <LineChart
-         feeData={monthlyFeeSummary}
-         expenseData={monthlyExpenseSummary}
+          feeData={monthlyFeeSummary}
+          expenseData={monthlyExpenseSummary}
         />
         <PieChart
-         data={{
-           labels: studentByCourse.map((item) => item.labels),
-           values: studentByCourse.map((item) => item.values),
-         }}
+          data={{
+            labels: studentByCourse.map((item) => item.labels),
+            values: studentByCourse.map((item) => item.values),
+          }}
         />
       </div>
 

@@ -64,8 +64,8 @@ export default function LineChart({ feeData,expenseData }: LineChartProps) {
   };
 
   return (
-    <div className="flex-1 bg-white shadow-lg rounded-lg p-5">
-      <Line data={data} options={options} />
+    <div className="flex-1 bg-white shadow-lg rounded-lg p-5 flex-center">
+      <Line data={data} options={options}/>
     </div>
   );
 }
