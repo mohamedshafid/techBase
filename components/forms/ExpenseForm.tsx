@@ -6,9 +6,10 @@ import { expenseSchema, feeSchema } from "@/schemas/schema";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { BanknoteArrowUpIcon } from "lucide-react";
+import { BanknoteArrowUpIcon, Loader } from "lucide-react";
 import { expenseCategoryOptions, paymentModeOptions } from "@/constants";
 import { createExpense } from "@/actions/expense.action";
+import toast from "react-hot-toast";
 
 type expenseFormData = z.infer<typeof expenseSchema>;
 
@@ -17,7 +18,7 @@ const ExpenseForm = () => {
     handleSubmit,
     register,
     reset,
-    formState: { errors },
+    formState: { errors ,isSubmitting},
   } = useForm<expenseFormData>({
     resolver: zodResolver(expenseSchema),
   });
@@ -26,14 +27,12 @@ const ExpenseForm = () => {
     try {
       const expense = await createExpense(data);
       if (expense) {
-        alert("Expense recorded successfully!");
+        toast.success("Expense recorded successfully!");
         reset();
       }
-
-      console.log("Expense Data:", expense);
     } catch (error) {
       console.log(error);
-      alert("Failed to record expense.");
+      toast.error("Failed to record expense. Please try again.");
     }
   };
 
@@ -151,8 +150,14 @@ const ExpenseForm = () => {
             className="btn btn-primary flex-center gap-2 flex-1 py-3"
             type="submit"
           >
-            <BanknoteArrowUpIcon />
-            Record Payment
+            {isSubmitting ? (
+              <Loader className="animate-spin" />
+            ) : (
+              <>
+                <BanknoteArrowUpIcon />
+                Record Payment
+              </>
+            )}
           </button>
           <button className="btn btn-secondary border py-3">Clear Form</button>
         </div>

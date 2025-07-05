@@ -12,13 +12,18 @@ export const loginAction = async (data: any) => {
     ) {
       (await cookies()).set("admin", "true", {
         httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
         path: "/",
       });
 
       return {
         success: true,
         message: "Login successful",
+      };
+    }
+    else{
+      return {
+        success: false,
+        message: "Invalid email or password",
       };
     }
   } catch (error) {

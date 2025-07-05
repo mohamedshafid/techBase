@@ -2,7 +2,6 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
 export function middleware(request: NextRequest) {
-  console.log("Middleware is running...");
   const isAdmin = request.cookies.get("admin")?.value === "true";
   const { pathname } = request.nextUrl;
 
@@ -10,7 +9,7 @@ export function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL("/dashboard", request.url));
   }
 
-  if (pathname === "/dashboard" && !isAdmin) {
+  if (pathname !== "/" && !isAdmin) {
     return NextResponse.redirect(new URL("/", request.url));
   }
   return NextResponse.next();

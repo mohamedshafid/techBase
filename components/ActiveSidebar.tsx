@@ -1,12 +1,19 @@
-'use client'
-import clsx from 'clsx';
-import Link from 'next/link';
-import { usePathname } from 'next/navigation'
-import React from 'react'
+"use client";
+import clsx from "clsx";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import React from "react";
 
-const ActiveSidebar = ({item}:any) => {
-  const pathname=usePathname();
-  console.log("ActiveSidebar pathname:", pathname);
+interface ActiveSidebarProps {
+  item: {
+    href: string;
+    icon: any;
+    title: string;
+  };
+}
+
+const ActiveSidebar = ({ item }: ActiveSidebarProps) => {
+  const pathname = usePathname();
   return (
     <Link
       href={item.href}
@@ -21,6 +28,6 @@ const ActiveSidebar = ({item}:any) => {
       <p className="text-md font-semibold">{item.title}</p>
     </Link>
   );
-}
+};
 
-export default ActiveSidebar
+export default ActiveSidebar;

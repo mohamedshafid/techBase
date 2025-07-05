@@ -2,7 +2,7 @@
 
 import React, { useEffect } from "react";
 import { InputField } from "@/components";
-import { GraduationCap } from "lucide-react";
+import { GraduationCap, Loader } from "lucide-react";
 import gsap from "gsap";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { authSchema } from "@/schemas/schema";
@@ -10,6 +10,7 @@ import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { loginAction } from "@/actions/auth.action";
 import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 
 type authFormData = z.infer<typeof authSchema>;
 
@@ -18,7 +19,7 @@ const Home = () => {
   const {
     handleSubmit,
     register,
-    formState: { errors },
+    formState: { errors, isSubmitting },
     reset,
   } = useForm<authFormData>({
     resolver: zodResolver(authSchema),
@@ -28,13 +29,16 @@ const Home = () => {
     try {
       const response = await loginAction(data);
       if (response?.success) {
-        alert("Login successful!");
+        toast.success("Login successful!");
         reset();
         router.push("/dashboard");
       }
+      else{
+        toast.error(response?.message);
+      }
     } catch (error) {
       console.error("Error during authentication:", error);
-      alert("Failed to authenticate. Please try again.");
+      toast.error("Login failed. Please check your credentials.");
     }
   };
 
@@ -92,7 +96,7 @@ const Home = () => {
               <p className="error">{errors.password?.message}</p>
             )}
           </div>
-          <div className="flex-between  form-div">
+          {/* <div className="flex-between  form-div">
             <div className="flex items-center gap-1">
               <input
                 type="checkbox"
@@ -106,9 +110,13 @@ const Home = () => {
               </label>
             </div>
             <p className="links">Forgot Password?</p>
-          </div>
+          </div> */}
           <button className="w-full py-2 rounded-lg bg-accent text-white">
-            Sign In
+            {isSubmitting ? (
+              <Loader className="animate-spin mx-auto" />
+            ) : (
+              "Sign In"
+            )}
           </button>
 
           <div className="w-full flex items-center gap-2 my-5">

@@ -1,4 +1,5 @@
 import React from "react";
+import CountsValue from "../CountsValue";
 
 interface ExpenseCardProps {
   label: string;
@@ -19,7 +20,9 @@ const ExpenseCard = ({ label, value, icon, color, info }: ExpenseCardProps) => {
       </div>
       <div className="mt-5 ">
         <h1 className="flex items-center gap-2">
-          <span className="lg:text-2xl font-bold text-xl">₹{value}</span>
+          <span className="lg:text-2xl font-bold text-xl">
+            <CountsValue value={value}/>
+          </span>
         </h1>
         <p
           className="flex items-center gap-1 text-[11px]  font-semibold tracking-wide"

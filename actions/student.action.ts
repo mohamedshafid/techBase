@@ -32,7 +32,9 @@ export const updateStudent = async (data:any) => {
     const student = await prisma.student.update({
       where: { id: data.student },
       data: {
-        remainingBalance: parseInt(data.paymentAmount,10),
+        remainingBalance: {
+          decrement: parseInt(data.paymentAmount, 10),
+        },
       },
     });
 

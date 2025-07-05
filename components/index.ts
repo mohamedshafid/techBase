@@ -14,6 +14,8 @@ import ExpenseCard from "./Cards/ExpenseCard";
 import Cards from "./Cards";
 import LineChart from "./Charts/LineChart";
 import PieChart from "./Charts/PieChart";
+import ActiveSidebar from "./ActiveSidebar";
+
 
 export {
   InputField,
@@ -31,4 +33,6 @@ export {
   ExpenseCard,
   Cards,
   LineChart,
+  PieChart,
+  ActiveSidebar
 };

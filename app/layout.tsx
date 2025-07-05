@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Roboto, Nunito } from "next/font/google";
+import { Toaster } from "react-hot-toast";
 import "./globals.css";
 
 const roboto = Roboto({
@@ -32,6 +33,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${roboto.variable} ${nunito.variable} antialiased`}>
         {children}
+        <Toaster />
       </body>
     </html>
   );

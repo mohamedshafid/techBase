@@ -1,5 +1,6 @@
 import clsx from "clsx";
 import React from "react";
+import CountsValue from "../CountsValue";
 
 interface DashboardCardProps {
   label: string;
@@ -29,7 +30,9 @@ const DashboardCard = ({
       </div>
       <div className="mt-5 ">
         <h1 className="flex items-center gap-2">
-          <span className="lg:text-2xl font-bold text-xl">{value}</span>
+          <span className="lg:text-2xl font-bold text-xl">
+            <CountsValue  value={value}/>
+          </span>
           <sub
             className={clsx(
               "flex items-center gap-1 text-[11px]  font-semibold tracking-wide",

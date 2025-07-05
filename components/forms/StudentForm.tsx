@@ -2,7 +2,7 @@
 
 import React, { useEffect } from "react";
 import InputField from "../InputField";
-import { RefreshCcwDot, UserPlus } from "lucide-react";
+import { Loader, RefreshCcwDot, UserPlus } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { studentSchema } from "@/schemas/schema";
@@ -10,19 +10,19 @@ import { z } from "zod";
 import { courseOptions } from "@/constants";
 import { createStudent } from "@/actions/student.action";
 import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 // import { createStudent } from "@/actions/student.action";
 
 type studentFormData = z.infer<typeof studentSchema>;
 
 const StudentForm = () => {
-
-  const router=useRouter();
+  const router = useRouter();
 
   const {
     handleSubmit,
     register,
     reset,
-    formState: { errors },
+    formState: { errors, isSubmitting },
     watch,
     setValue,
   } = useForm<studentFormData>({
@@ -32,12 +32,12 @@ const StudentForm = () => {
   const onSubmit = async (data: studentFormData) => {
     try {
       const student = await createStudent(data);
-      alert("Student registered successfully!");
+      toast.success("Student registered successfully!");
       reset();
       router.push("/dashboard");
     } catch (error) {
       console.error("Error registering student:", error);
-      alert("Failed to register student.");
+      toast.error("Failed to register student. Please try again.");
     }
   };
 
@@ -217,8 +217,14 @@ const StudentForm = () => {
           Reset Form
         </button>
         <button className="btn btn-primary flex gap-2 items-center">
-          <UserPlus />
-          Register Student
+          {isSubmitting ? (
+            <Loader className="animate-spin" />
+          ) : (
+            <>
+              <UserPlus />
+              Register Student
+            </>
+          )}
         </button>
       </div>
     </form>

@@ -14,7 +14,6 @@ export const getTotalFeesCollected = async () => {
   );
 };
 export const getTotalStudents = async () => {
-  console.log(await prisma.student.count());
   return await prisma.student.count();
 };
 

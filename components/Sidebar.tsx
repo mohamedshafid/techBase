@@ -3,7 +3,7 @@
 import React from "react";
 import { GraduationCap } from "lucide-react";
 import { sidebar } from "@/constants";
-import ActiveSidebar from "./ActiveSidebar";
+import {ActiveSidebar} from "@/components";
 
 const Sidebar = () => {
 
@@ -17,7 +17,7 @@ const Sidebar = () => {
       <ul className="mt-10 space-y-5">
         {sidebar.map((item) => (
           <li key={item.title}>
-            <ActiveSidebar item={item} />
+            <ActiveSidebar item={item}/>
           </li>
         ))}
       </ul>

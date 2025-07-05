@@ -64,7 +64,7 @@ export const FeeTable: React.FC<FeePaymentTableProps> = ({ payments ,visibleColu
       <Table
         key={"fee-table"}
         columns={filteredColumns}
-        dataSource={payments.map((p) => ({ ...p, key: p.id }))}
+        dataSource={payments.map((p,index) => ({ ...p, key: index.toString() }))}
       />
   );
 };

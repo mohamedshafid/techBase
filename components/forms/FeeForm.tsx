@@ -6,7 +6,7 @@ import { feeSchema } from "@/schemas/schema";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { BanknoteArrowUpIcon } from "lucide-react";
+import { BanknoteArrowUpIcon, Loader } from "lucide-react";
 import {
   collectedByOptions,
   courseOptions,
@@ -14,6 +14,8 @@ import {
 } from "@/constants";
 import { createFee } from "@/actions/fee.action";
 import { updateStudent } from "@/actions/student.action";
+import toast from "react-hot-toast";
+import { is } from "date-fns/locale";
 
 type feeFormData = z.infer<typeof feeSchema>;
 
@@ -35,7 +37,7 @@ const FeeForm = ({
     reset,
     setValue,
     watch,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm<feeFormData>({
     resolver: zodResolver(feeSchema),
   });
@@ -44,13 +46,13 @@ const FeeForm = ({
     try {
       const fee = await createFee(data);
       const student = await updateStudent(data);
-      if (fee && student) {
-        alert("Fee payment recorded successfully!");
+      if (fee) {
+        toast.success("Fee payment recorded successfully!");
         reset();
       }
     } catch (error) {
       console.error("Error recording fee payment:", error);
-      alert("Failed to record fee payment.");
+      toast.error("Failed to record fee payment. Please try again.");
     }
   };
 
@@ -70,7 +72,7 @@ const FeeForm = ({
       setValue("course", match?.label ?? "");
       setValue(
         "outStandingBalance",
-        selectedStudent?.outStandingBalance || "0"
+        selectedStudent?.outStandingBalance?.toString() || "0"
       );
     }
   }, [selectedStudentId, setValue]);
@@ -92,7 +94,6 @@ const FeeForm = ({
               id="name"
               register={register("student")}
               options={[
-                { label: "Select Student", value: "" },
                 ...studentOption.map((student) => ({
                   label: student.label,
                   value: student.value,
@@ -123,9 +124,9 @@ const FeeForm = ({
               Oustanding Balance
             </label>
             <InputField
-              type="number"
+              type="text"
               placeholder="₹ 0"
-              id="oustandingBalance"
+              id="outStandingBalance"
               register={register("outStandingBalance")}
             />
             {errors.outStandingBalance && (
@@ -176,8 +177,8 @@ const FeeForm = ({
               register={register("paymentDate")}
             />
 
-            {errors.paymentAmount && (
-              <p className="error">{errors.paymentAmount?.message}</p>
+            {errors.paymentDate && (
+              <p className="error">{errors.paymentDate?.message}</p>
             )}
           </div>
         </div>
@@ -216,8 +217,14 @@ const FeeForm = ({
             className="btn btn-primary flex-center gap-2 flex-1 py-3"
             type="submit"
           >
-            <BanknoteArrowUpIcon />
-            Record Payment
+            {isSubmitting ? (
+              <Loader className="animate-spin" />
+            ) : (
+              <>
+                <BanknoteArrowUpIcon />
+                Record Payment
+              </>
+            )}
           </button>
           <button className="btn btn-secondary border py-3">Clear Form</button>
         </div>
