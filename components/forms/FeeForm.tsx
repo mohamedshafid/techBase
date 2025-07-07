@@ -223,7 +223,7 @@ const FeeForm = ({
               {
                 "bg-green-500 text-white": isSuccess,
                 "btn-primary": !isSuccess && !isSubmitting,
-                "cursor-not-allowed": isSubmitting,
+                "cursor-not-allowed btn-primary": isSubmitting,
               }
             )}
             type="submit"

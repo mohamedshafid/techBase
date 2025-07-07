@@ -109,7 +109,7 @@ const Home = () => {
               {
                 "bg-green-500": isSuccess,
                 "bg-accent": !isSuccess && !isSubmitting,
-                "cursor-not-allowed": isSubmitting,
+                "cursor-not-allowed bg-accent": isSubmitting,
               }
             )}
             disabled={isSubmitting}
@@ -117,8 +117,8 @@ const Home = () => {
             {isSubmitting ? (
               <Loader className="animate-spin mx-auto" />
             ) : isSuccess ? (
-              <div className="flex items-center gap-2">
-                <CheckCheck className="mx-auto" />
+              <div className="w-full flex justify-center items-center gap-2">
+                <CheckCheck />
                 Success
               </div>
             ) : (
