@@ -114,7 +114,7 @@ const Home = () => {
             )}
             disabled={isSubmitting}
           >
-            {isSubmitting ? (
+          {isSubmitting ? (
               <Loader className="animate-spin mx-auto" />
             ) : isSuccess ? (
               <div className="w-full flex justify-center items-center gap-2">

@@ -130,7 +130,6 @@ const FinancialForm = () => {
           <button className="btn btn-primary" type="submit">
             Apply Filter
           </button>
-          <button className="btn btn-success">Export PDF</button>
           <button className="btn btn-excel" onClick={handleExportExcel}>
             Export Excel
           </button>
