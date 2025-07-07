@@ -1,4 +1,4 @@
-'use server'
+"use server";
 
 import { prisma } from "@/lib/prisma";
 
@@ -13,6 +13,23 @@ export const getTotalFeesCollected = async () => {
     (feePaymentsSum._sum.paymentAmount ?? 0)
   );
 };
+
+export const getTotalFeesCollectedByDate = async (
+  startDate: Date,
+  endDate: Date
+) => {
+  const fees = await prisma.fee.aggregate({
+    _sum: { paymentAmount: true },
+    where: {
+      paymentDate: {
+        gte: startDate,
+        lt: endDate,
+      },
+    },
+  });
+  return fees._sum.paymentAmount ?? 0;
+};
+
 export const getTotalStudents = async () => {
   return await prisma.student.count();
 };
@@ -30,6 +47,22 @@ export const getTotalExpenses = async () => {
   });
 
   return totalExpenses._sum.amount ?? 0;
+};
+
+export const getTotalyExpensesByDate = async (
+  startDate: Date,
+  endDate: Date
+) => {
+  const expenses = await prisma.expense.aggregate({
+    _sum: { amount: true },
+    where: {
+      date: {
+        gte: startDate,
+        lt: endDate,
+      },
+    },
+  });
+  return expenses._sum.amount ?? 0;
 };
 
 export const getRecentFeeCollections = async (limit = 5) => {
@@ -50,7 +83,6 @@ export const getRecentFeeCollections = async (limit = 5) => {
     amount: fee.paymentAmount,
   }));
 };
-
 
 export const getRecentExpenses = async (limit = 5) => {
   const expenses = await prisma.expense.findMany({
@@ -81,9 +113,9 @@ export async function getMonthlyFeeSummary() {
       paymentDate: true,
     },
   });
-  const summary = new Array(12).fill(0); 
+  const summary = new Array(12).fill(0);
   fees.forEach((fee) => {
-    const month = new Date(fee.paymentDate).getMonth(); 
+    const month = new Date(fee.paymentDate).getMonth();
     summary[month] += fee.paymentAmount;
   });
   return {
@@ -104,5 +136,3 @@ export async function getMonthlyFeeSummary() {
     values: summary,
   };
 }
-
-

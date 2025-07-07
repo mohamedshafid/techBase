@@ -71,6 +71,8 @@ export const getExpense = async () => {
   });
 };
 
+
+
 export const getMonthlyExpenseSummary = async () => {
   const expenses = await prisma.expense.findMany({
     where: {

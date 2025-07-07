@@ -43,11 +43,10 @@ export const studentSchema = z.object({
 export const financialSchema = z.object({
   fromDate: z
     .string()
-    .regex(/^\d{4}-\d{2}-\d{2}$/, "From date must be in YYYY-MM-DD format"),
+    .min(1, "From date is required"),
   toDate: z
     .string()
-    .regex(/^\d{4}-\d{2}-\d{2}$/, "To date must be in YYYY-MM-DD format"),
-  reportType: z.string().trim().min(1, "Report type is required"),
+    .min(1, "To date is required"),
 });
 
 export const feeSchema = z

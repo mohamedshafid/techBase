@@ -1,12 +1,12 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import InputField from "../InputField";
 import { feeSchema } from "@/schemas/schema";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { BanknoteArrowUpIcon, Loader } from "lucide-react";
+import { BanknoteArrowUpIcon, CheckCheck, Loader } from "lucide-react";
 import {
   collectedByOptions,
   courseOptions,
@@ -15,7 +15,7 @@ import {
 import { createFee } from "@/actions/fee.action";
 import { updateStudent } from "@/actions/student.action";
 import toast from "react-hot-toast";
-import { is } from "date-fns/locale";
+import clsx from "clsx";
 
 type feeFormData = z.infer<typeof feeSchema>;
 
@@ -31,6 +31,8 @@ const FeeForm = ({
 }: {
   studentOption?: StudentOption[];
 }) => {
+  const [isSuccess, setIsSuccess] = useState(false);
+
   const {
     handleSubmit,
     register,
@@ -45,10 +47,14 @@ const FeeForm = ({
   const onSubmit = async (data: feeFormData) => {
     try {
       const fee = await createFee(data);
-      const student = await updateStudent(data);
+      await updateStudent(data);
+
       if (fee) {
-        toast.success("Fee payment recorded successfully!");
-        reset();
+        setIsSuccess(true);
+        setTimeout(() => {
+          reset();
+          setIsSuccess(false);
+        }, 2000);
       }
     } catch (error) {
       console.error("Error recording fee payment:", error);
@@ -114,14 +120,14 @@ const FeeForm = ({
               id="course"
               register={register("course")}
             />
-
             {errors.course && <p className="error">{errors.course?.message}</p>}
           </div>
         </div>
+
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 form-div">
           <div>
             <label htmlFor="" className="form-label">
-              Oustanding Balance
+              Outstanding Balance
             </label>
             <InputField
               type="text"
@@ -143,7 +149,6 @@ const FeeForm = ({
               id="paymentAmount"
               register={register("paymentAmount")}
             />
-
             {errors.paymentAmount && (
               <p className="error">{errors.paymentAmount?.message}</p>
             )}
@@ -168,7 +173,7 @@ const FeeForm = ({
           </div>
           <div>
             <label htmlFor="" className="form-label">
-              Payment Amount
+              Payment Date
             </label>
             <InputField
               type="date"
@@ -176,12 +181,12 @@ const FeeForm = ({
               id="paymentDate"
               register={register("paymentDate")}
             />
-
             {errors.paymentDate && (
               <p className="error">{errors.paymentDate?.message}</p>
             )}
           </div>
         </div>
+
         <div className="form-div">
           <label htmlFor="" className="form-label">
             Collected By
@@ -193,11 +198,11 @@ const FeeForm = ({
             options={collectedByOptions}
             register={register("collectedBy")}
           />
-
           {errors.collectedBy && (
             <p className="error">{errors.collectedBy?.message}</p>
           )}
         </div>
+
         <div className="form-div">
           <label htmlFor="" className="form-label">
             Notes (Optional)
@@ -208,17 +213,29 @@ const FeeForm = ({
             id="notes"
             register={register("notes")}
           />
-
           {errors.notes && <p className="error">{errors.notes?.message}</p>}
         </div>
 
         <div className="mt-8 flex items-center gap-3">
           <button
-            className="btn btn-primary flex-center gap-2 flex-1 py-3"
+            className={clsx(
+              "btn flex-center gap-2 flex-1 py-3 transition-all duration-500 ease-in-out",
+              {
+                "bg-green-500 text-white": isSuccess,
+                "btn-primary": !isSuccess && !isSubmitting,
+                "cursor-not-allowed": isSubmitting,
+              }
+            )}
             type="submit"
+            disabled={isSubmitting}
           >
             {isSubmitting ? (
               <Loader className="animate-spin" />
+            ) : isSuccess ? (
+              <>
+                <CheckCheck className="text-white" />
+                <span>Success!</span>
+              </>
             ) : (
               <>
                 <BanknoteArrowUpIcon />
@@ -226,7 +243,13 @@ const FeeForm = ({
               </>
             )}
           </button>
-          <button className="btn btn-secondary border py-3">Clear Form</button>
+          <button
+            type="button"
+            onClick={() => reset()}
+            className="btn btn-secondary border py-3"
+          >
+            Clear Form
+          </button>
         </div>
       </form>
     </>

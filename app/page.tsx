@@ -1,8 +1,7 @@
 "use client";
-
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { InputField } from "@/components";
-import { GraduationCap, Loader } from "lucide-react";
+import { CheckCheck, GraduationCap, Loader } from "lucide-react";
 import gsap from "gsap";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { authSchema } from "@/schemas/schema";
@@ -11,11 +10,14 @@ import { useForm } from "react-hook-form";
 import { loginAction } from "@/actions/auth.action";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
+import clsx from "clsx";
 
 type authFormData = z.infer<typeof authSchema>;
 
 const Home = () => {
   const router = useRouter();
+  const [isSuccess, setIsSuccess] = useState(false);
+
   const {
     handleSubmit,
     register,
@@ -29,12 +31,15 @@ const Home = () => {
     try {
       const response = await loginAction(data);
       if (response?.success) {
-        toast.success("Login successful!");
-        reset();
-        router.push("/dashboard");
-      }
-      else{
-        toast.error(response?.message);
+        setIsSuccess(true);
+        setTimeout(() => {
+          reset();
+          setIsSuccess(false);
+          router.push("/dashboard");
+        }, 1500);
+      } else {
+        toast.error(response?.message || "Login failed. Please try again.");
+        console.error("Login failed:", response?.message);
       }
     } catch (error) {
       console.error("Error during authentication:", error);
@@ -46,7 +51,7 @@ const Home = () => {
     gsap.fromTo(
       "#form-ref",
       { opacity: 0, y: 50 },
-      { opacity: 100, y: 0, duration: 1 }
+      { opacity: 1, y: 0, duration: 1 }
     );
   }, []);
 
@@ -96,24 +101,26 @@ const Home = () => {
               <p className="error">{errors.password?.message}</p>
             )}
           </div>
-          {/* <div className="flex-between  form-div">
-            <div className="flex items-center gap-1">
-              <input
-                type="checkbox"
-                name="remember_me"
-                id="remember_me"
-                className="w-5 h-5"
-              />
-              <br />
-              <label htmlFor="remember_me" className="form-label">
-                Remember Me
-              </label>
-            </div>
-            <p className="links">Forgot Password?</p>
-          </div> */}
-          <button className="w-full py-2 rounded-lg bg-accent text-white">
+
+          <button
+            type="submit"
+            className={clsx(
+              "w-full py-2 rounded-lg transition-colors duration-500 text-white",
+              {
+                "bg-green-500": isSuccess,
+                "bg-accent": !isSuccess && !isSubmitting,
+                "cursor-not-allowed": isSubmitting,
+              }
+            )}
+            disabled={isSubmitting}
+          >
             {isSubmitting ? (
               <Loader className="animate-spin mx-auto" />
+            ) : isSuccess ? (
+              <div className="flex items-center gap-2">
+                <CheckCheck className="mx-auto" />
+                Success
+              </div>
             ) : (
               "Sign In"
             )}

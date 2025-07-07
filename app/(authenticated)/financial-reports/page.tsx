@@ -1,8 +1,15 @@
 import { FinancialForm, Header, Cards } from "@/components";
+import { FinancialTable } from "@/components/Tables/FinancialTable";
+import { getDashboardData } from "@/services/dashboard";
+import { getMonthlyExpenseSummary } from "@/utils/expense.utils";
 import { BadgeIndianRupee, BanknoteArrowDown, ChartPie } from "lucide-react";
 import React from "react";
 
-const Reports = () => {
+const Reports = async () => {
+  const { monthlyFeeSummary, totalFeesCollectedByDate } =
+    await getDashboardData();
+  const monthlyExpenseSummary = await getMonthlyExpenseSummary();
+
   return (
     <main>
       <Header
@@ -10,46 +17,22 @@ const Reports = () => {
         subtitle="Analyze your center's financial health and performance"
       />
 
-      <div className="w-full mt-8 bg-white rounded-lg p-6 flex items-center">
+      <div className="">
         <FinancialForm />
       </div>
 
-      <div className="w-full mt-6 grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4">
-        <Cards
-          label="Total Fees Collected"
-          value="₹4,85,000"
-          valueColor="green"
-          iconAndColor={{
-            icon: BadgeIndianRupee,
-            color: "green",
-          }}
-          change={{
-            amount: "+12% from last month",
-          }}
-        />
-        <Cards
-          label="Total Fees Collected"
-          value="₹4,85,000"
-          valueColor="red"
-          iconAndColor={{
-            icon: BanknoteArrowDown,
-            color: "red",
-          }}
-          change={{
-            amount: "+8% from last month",
-          }}
-        />
-        <Cards
-          label="Total Fees Collected"
-          value="₹4,85,000"
-          valueColor="blue"
-          iconAndColor={{
-            icon: ChartPie,
-            color: "blue",
-          }}
-          change={{
-            amount: "+15% from last month",
-          }}
+      <div className="w-full mt-6 bg-white rounded-lg p-6">
+        <FinancialTable
+          financial={monthlyFeeSummary.labels.map((label, index) => ({
+            month: label,
+            fees_collected: monthlyFeeSummary.values[index],
+            total_expenses: monthlyExpenseSummary.values[index],
+            net_profit: Math.max(
+              0,
+              monthlyFeeSummary.values[index] -
+                monthlyExpenseSummary.values[index]
+            ),
+          }))}
         />
       </div>
     </main>
