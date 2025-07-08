@@ -31,7 +31,11 @@ const DashboardCard = ({
       <div className="mt-5 ">
         <h1 className="flex items-center gap-2">
           <span className="lg:text-2xl font-bold text-xl">
-            <CountsValue  value={value}/>
+            {label === "Total Students" ? (
+              <CountsValue value={value} />
+            ) : (
+              <CountsValue value={value} isRupee={true}/>
+            )}
           </span>
           <sub
             className={clsx(
