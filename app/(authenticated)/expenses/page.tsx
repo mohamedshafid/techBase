@@ -14,13 +14,12 @@ import {
 } from "lucide-react";
 
 const Expenses = async () => {
-
   const {
     todayExpenses,
     thisMonthExpenses,
     expenseCount,
     todayExpenseCount,
-    expenses
+    expenses,
   } = await getExpenseData();
 
   return (
@@ -73,17 +72,24 @@ const Expenses = async () => {
         </div>
       </div>
 
-      <div className="p-4 bg-white shadow-md rounded-lg mt-10">
-        <ExpenseTable
-          expenses={expenses.map((expense) => ({
-            ...expense,
-            date: new Date(expense.date).toLocaleDateString("en-US", {
-              month: "short",
-              day: "numeric",
-              year: "numeric",
-            }),
-          }))}
-        />
+      <div className="grid grid-cols-1 xl:grid-cols-2 gap-3">
+        <div className="mt-10 bg-white shadow-lg rounded-lg flex flex-col gap-2 flex-grow">
+          <div className="flex items-center justify-between  p-3">
+            <h1 className="font-bold">Recent Expenses</h1>
+            <p className="links">View All</p>
+          </div>
+          <ExpenseTable
+            expenses={expenses.map((expense) => ({
+              ...expense,
+              date: new Date(expense.date).toLocaleDateString("en-US", {
+                month: "short",
+                day: "numeric",
+                year: "numeric",
+              }),
+            }))}
+            visibleColumns={["purpose", "paidTo", "date", "amount"]}
+          />
+        </div>
       </div>
     </main>
   );

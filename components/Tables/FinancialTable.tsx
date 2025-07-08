@@ -78,7 +78,6 @@ export const FinancialTable: React.FC<FinancialTableProps> = ({
         key: index.toString(),
       }))}
       bordered
-      className="text-center [&_th]:bg-gray-100 [&_th]:font-semibold [&_td]:px-4 [&_td]:py-3"
     />
   );
 };

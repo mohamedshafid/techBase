@@ -61,10 +61,16 @@ export const FeeTable: React.FC<FeePaymentTableProps> = ({ payments ,visibleColu
     : columns;
 
   return (
+    <div className="overflow-x-auto">
       <Table
-        key={"fee-table"}
-        columns={filteredColumns}
-        dataSource={payments.map((p,index) => ({ ...p, key: index.toString() }))}
+        columns={columns}
+        dataSource={payments.map((p, index) => ({
+          ...p,
+          key: index.toString(),
+        }))}
+        // scroll={{ x: "1000px" }} 
+        pagination={{ pageSize: 10 }}
       />
+    </div>
   );
 };

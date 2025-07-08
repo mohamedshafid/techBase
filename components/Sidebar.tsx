@@ -12,7 +12,7 @@ const Sidebar = () => {
     <Fragment>
       {!isOpen && (
         <button
-          className="lg:hidden fixed top-3 left-3 z-50 text-accent cursor-pointer"
+          className="lg:hidden absolute top-3 left-3 z-50 text-accent cursor-pointer"
           onClick={() => setIsOpen(!isOpen)}
         >
           <ChartNoAxesGantt size={40} />

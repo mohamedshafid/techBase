@@ -65,10 +65,13 @@ export const ExpenseTable: React.FC<ExpenseTableProps> = ({
     : columns;
 
   return (
-    <Table
-      key={"expense-table"}
-      columns={filteredColumns}
-      dataSource={expenses.map((e) => ({ ...e, key: e.id }))}
-    />
+    <div className="overflow-x-auto">
+      <Table
+        key={"expense-table"}
+        columns={filteredColumns}
+        dataSource={expenses.map((e) => ({ ...e, key: e.id }))}
+        // scroll={{ x: "1000px" }}
+      />
+    </div>
   );
 };
