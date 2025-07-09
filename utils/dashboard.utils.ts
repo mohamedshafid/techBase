@@ -113,11 +113,34 @@ export async function getMonthlyFeeSummary() {
       paymentDate: true,
     },
   });
+
+  const initialPayments = await prisma.student.findMany({
+    where: {
+      joinDate: {
+        gte: new Date(`2025-01-01`),
+        lt: new Date(`2026-01-01`),
+      },
+    },
+    select: {
+      initialPayment: true,
+      joinDate: true,
+    },
+  });
+
   const summary = new Array(12).fill(0);
+
   fees.forEach((fee) => {
     const month = new Date(fee.paymentDate).getMonth();
     summary[month] += fee.paymentAmount;
   });
+
+  initialPayments.forEach((student) => {
+    const month = new Date(student.joinDate).getMonth();
+    summary[month] += student.initialPayment ?? 0;
+  });
+
+  const total = summary.reduce((sum, val) => sum + val, 0);
+
   return {
     labels: [
       "Jan",
@@ -134,5 +157,6 @@ export async function getMonthlyFeeSummary() {
       "Dec",
     ],
     values: summary,
+    total,
   };
 }

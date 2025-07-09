@@ -46,5 +46,6 @@ export const getDashboardData = async () => {
     recentFeeCollection,
     recentExpenses,
     monthlyFeeSummary,
+    totalExpensesByDate,
   };
 };
