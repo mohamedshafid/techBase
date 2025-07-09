@@ -19,7 +19,6 @@ const courseValuesMap: { [key: string]: string } = {
   DATA_SCIENCE: "Data Science",
   UI_UX_DESIGN: "UI/UX Design",
   DIGITAL_MARKETING: "Digital Marketing",
-  WEB_DEVELOPMENT: "Web Development",
   MOBILE_APP_DEVELOPMENT: "Mobile App Development",
 };
 
